@@ -1,62 +1,52 @@
 // import package
 import 'package:flutter/material.dart';
 import 'package:listview/object_list.dart';
+import 'package:listview/widget/item.dart';
 
-class ListPage extends StatelessWidget {
+class ListPage extends StatefulWidget {
   static const routeName = "second_page";
+
+  @override
+  State<ListPage> createState() => _ListPageState();
+}
+
+class _ListPageState extends State<ListPage>
+    with SingleTickerProviderStateMixin {
+  TabController? _controller;
+  int _selectedIndex = 0;
+
+  List<Widget> list = [
+    Tab(icon: Icon(Icons.person_outline)),
+    Tab(icon: Icon(Icons.auto_mode)),
+    Tab(icon: Icon(Icons.call)),
+  ];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _controller = TabController(length: list.length, vsync: this);
+    _controller!.addListener(() {
+      setState(() {
+        _selectedIndex = _controller!.index;
+      });
+      print("Selected Index: " + _controller!.index.toString());
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Container(
-            width: MediaQuery.of(context).size.width,
-            child: Text("11 PPLG 1", textAlign: TextAlign.center)),
+        bottom: TabBar(tabs: list, controller: _controller, onTap: (index){},),
       ),
-      body: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        color: Colors.white12,
-        child: ListView.builder(
-            itemCount: data.length,
-            itemBuilder: (BuildContext context, index) {
-              return Container(
-                margin: EdgeInsets.only(top: 10, bottom: 0),
-                padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                height: 150,
-                width: double.maxFinite,
-                child: Card(
-                  color: Colors.white30,
-                  elevation: 5,
-                  child: Stack(
-                    children: [
-                      Row(
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.only(left: 10, right: 10),
-                            child: CircleAvatar(
-                              radius: 35,
-                            ),
-                          ),
-                          Expanded(
-                            child: Container(
-                              margin: EdgeInsets.only(left: 10, right: 10),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text("Nama: ${data[index].nama}"),
-                                  Text("Absen: ${data[index].absen}"),
-                                ],
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            }),
+      body: TabBarView(
+      controller: _controller,
+      children: [
+        item(),
+        Center(child: Text( _selectedIndex.toString()),),
+        Center(child: Text( _selectedIndex.toString()),),
+      ],
       ),
     );
   }

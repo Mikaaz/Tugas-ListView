@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:listview/list_view.dart';
+import 'package:listview/splash_screen.dart';
 
 void main() {
   runApp(const MainPAge());
@@ -11,7 +11,7 @@ class MainPAge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: ListPage(),
+      home: Splash(),
     );
   }
 }
